@@ -6,7 +6,7 @@
     android:weightSum="1"
     android:orientation="vertical"
 
-    >
+    android:background="@color/lightback">
 
 
     <android.support.v4.view.ViewPager
@@ -25,7 +25,6 @@
         android:layout_gravity="bottom"
         android:translationZ="1dp"
         android:src="@drawable/ic_add_circle_24dp"
-        android:background="@android:color/transparent"
         android:scaleType="fitXY"
 
         android:layout_alignParentBottom="true"
@@ -33,7 +32,9 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="20dp"
 
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="20dp"
+        android:padding="5dp"
+        app:backgroundTint="@color/colorAccent" />
 
 
 </RelativeLayout>

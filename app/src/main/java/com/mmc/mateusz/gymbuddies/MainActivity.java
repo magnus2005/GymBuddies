@@ -1,15 +1,10 @@
 package com.mmc.mateusz.gymbuddies;
 
-import android.app.*;
 
-
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 
 import android.support.design.widget.FloatingActionButton;
 
-import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 
 import android.support.v7.app.*;
@@ -33,28 +28,30 @@ public class MainActivity extends AppCompatActivity implements LoginAsyncTask.Co
     public static final String LOGIN_SPREFERENCES = "com.mmc.mateusz.gymudies.MY_LOGIN_PREF";
     public User Me;
     public ListFragmentUsers listFragmentUsers=null;
+    public MyProfil myProfil=null;
     public TextView tvName, tvMiasto, tvMyGym;
 
     public  FloatingActionButton fabBeBuddy;
     public ViewPager viewPager;
     public TabsAdapter tabsAdapter;
 
-
+    public static LoginAsyncTask.CommunicationWithAsynckTask communicate;
     public ImageButton btnToProfil, btnToBeBuddy;
     private View topProfil;
     public boolean BootestFab=false;
     private ImageView avatar;
+
+    public int lastPosition;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        tvName = (TextView) findViewById(R.id.tvNameOfUser);
-        tvMiasto = (TextView) findViewById(R.id.tvMiastooOUser);
-        tvMyGym = (TextView) findViewById(R.id.tvMyGym);
-        //topProfil = findViewById(R.id.lay_profil_find);
+        communicate = this;
+        tvName = (TextView) findViewById(R.id.tvMyname);
+        tvMiasto = (TextView) findViewById(R.id.tvMycity);
+        //tvMyGym = (TextView) findViewById(R.id.tvMyGym);
         avatar = (ImageView)findViewById(R.id.my_avatar);
 
         fabBeBuddy = (FloatingActionButton)findViewById(R.id.fabBeBuddy);
@@ -67,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements LoginAsyncTask.Co
 
                 LoginAsyncTask loginAsyncTaska = new LoginAsyncTask(LoginAsyncTask.REQUEST_ARRAY,Me,MainActivity.this,false);
                 loginAsyncTaska.execute();
+
                if (BootestFab ==false){
                    fabBeBuddy.setImageResource(R.drawable.ic_close_24dp);
                    BootestFab=true;
@@ -81,9 +79,6 @@ public class MainActivity extends AppCompatActivity implements LoginAsyncTask.Co
 
 
 
-
-
-
         Me = new User();
         Intent getU = getIntent();
         if (getU.hasExtra("EXISTED_USER") == true) {
@@ -91,17 +86,31 @@ public class MainActivity extends AppCompatActivity implements LoginAsyncTask.Co
             //setTextViews();
         }
 
-
-
-
         LoginAsyncTask loginAsyncTask = new LoginAsyncTask(LoginAsyncTask.REQUEST_ARRAY,Me,MainActivity.this,false);
         loginAsyncTask.execute();
 
 
 
-        tabsAdapter = new TabsAdapter(getSupportFragmentManager());
+
+
+/*
+        listFragmentUsers = new ListFragmentUsers();
+        listFragmentUsers.setMe(Me);
+
+        CustomAdapter customAdapter = new CustomAdapter(this,xxxx);
+        listFragmentUsers.setListAdapter(customAdapter);
+
+        tabsAdapter = new TabsAdapter(getSupportFragmentManager(),listFragmentUsers);
         viewPager = (ViewPager)findViewById(R.id.pager);
         viewPager.setAdapter(tabsAdapter);
+
+
+
+*/
+
+
+
+
 
 
     }
@@ -131,22 +140,34 @@ public class MainActivity extends AppCompatActivity implements LoginAsyncTask.Co
 
     @Override
     public void arrayDelivery(ArrayList<User> arrayList) {
+if (listFragmentUsers!=null){
+       lastPosition =  viewPager.getCurrentItem();
+
+
+}
+        listFragmentUsers = new ListFragmentUsers();
+        myProfil=new MyProfil(Me);
+        listFragmentUsers.setMe(Me);
+
+        CustomAdapter customAdapter = new CustomAdapter(this,arrayList);
+        listFragmentUsers.setListAdapter(customAdapter);
+
+        tabsAdapter = new TabsAdapter(getSupportFragmentManager(),listFragmentUsers, myProfil);
+        viewPager = (ViewPager)findViewById(R.id.pager);
+
+        viewPager.setAdapter(tabsAdapter);
+        if (listFragmentUsers!=null){
+           viewPager.setCurrentItem(lastPosition);
+
+        }
+
+
         if (listFragmentUsers==null){
 
-            listFragmentUsers = new ListFragmentUsers();
-            listFragmentUsers.setMe(Me);
 
 
-            CustomAdapter customAdapter = new CustomAdapter(this,arrayList);
-
-            listFragmentUsers.setListAdapter(customAdapter);
-
-
-            FragmentManager fragmentManaager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManaager.beginTransaction();
-            fragmentTransaction.add(R.id.UserListLayout,listFragmentUsers).commit();
-
-        }else{
+        }
+        /*else{
             listFragmentUsers = new ListFragmentUsers();
             listFragmentUsers.setMe(Me);
 
@@ -159,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements LoginAsyncTask.Co
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.UserListLayout, listFragmentUsers).commit();
-        }
+        }*/
 
     }
 

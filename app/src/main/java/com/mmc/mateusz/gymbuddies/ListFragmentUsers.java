@@ -1,5 +1,7 @@
 package com.mmc.mateusz.gymbuddies;
 
+import android.app.Activity;
+import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
@@ -18,15 +20,21 @@ import java.util.ArrayList;
 public class ListFragmentUsers extends ListFragment implements LoginAsyncTask.CommunicationWithAsynckTask, SwipeRefreshLayout.OnRefreshListener {
     private ArrayList<User> arrayUserList;
     private User Me;
+    private Context context;
+    public LoginAsyncTask.CommunicationWithAsynckTask x = MainActivity.communicate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.list_fragment, container, false);
 
-
     }
+
     public void setMe(User me){
         this.Me=me;
+    }
+
+    public void setConetext(Context context){
+     this.context=context;
     }
 
     @Override
@@ -38,11 +46,11 @@ public class ListFragmentUsers extends ListFragment implements LoginAsyncTask.Co
         swype.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                LoginAsyncTask loginAsyncTask = new LoginAsyncTask(LoginAsyncTask.REQUEST_ARRAY,Me,ListFragmentUsers.this,false);
+                LoginAsyncTask loginAsyncTask = new LoginAsyncTask(LoginAsyncTask.REQUEST_ARRAY,Me,MainActivity.communicate,false);
                 loginAsyncTask.execute();
+
             }
         });
-
 
 
     }
@@ -56,15 +64,6 @@ public class ListFragmentUsers extends ListFragment implements LoginAsyncTask.Co
     public void arrayDelivery(ArrayList<User> arrayList) {
         ListFragmentUsers listFragmentUsers = new ListFragmentUsers();
 
-
-        CustomAdapter customAdapter = new CustomAdapter(getView().getContext(),arrayList);
-
-        listFragmentUsers.setListAdapter(customAdapter);
-
-
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.UserListLayout, listFragmentUsers).commit();
 
     }
 

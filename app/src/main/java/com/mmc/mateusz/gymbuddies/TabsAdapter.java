@@ -7,25 +7,43 @@ import android.support.v4.app.ListFragment;
 
 import com.mmc.mateusz.gymbuddies.utils.User;
 
+import java.util.ArrayList;
+
 /**
  * Created by Mateusz on 2016-06-26.
  */
+
 public class TabsAdapter extends FragmentStatePagerAdapter {
-    public TabsAdapter(FragmentManager fm) {
+    public FragmentManager fragmentManager;
+
+
+    public ListFragmentUsers listFragmentUsers;
+    public Fragment myProfil;
+
+
+    private User Me;
+
+
+    public TabsAdapter(FragmentManager fm, ListFragmentUsers lfu, MyProfil myporf){
         super(fm);
+        fragmentManager = fm;
+        this.listFragmentUsers=lfu;
+        this.myProfil = myporf;
+
 
     }
-    private User Me;
     @Override
     public Fragment getItem(int position) {
+
 
         switch (position) {
             case 0:
                 //Fragement for Android Tab
-                return new ListFragmentUsers();
+
+                return listFragmentUsers;
             case 1:
                 //Fragment for Ios Tab
-                return new MyProfil();
+                return myProfil;
 
         }
         return null;
@@ -35,4 +53,6 @@ public class TabsAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return 2;
     }
+
+
 }

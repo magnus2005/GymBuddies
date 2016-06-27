@@ -109,6 +109,8 @@ public class Login extends AppCompatActivity implements LoginAsyncTask.Communica
                     loginAsyncTask = new LoginAsyncTask(LoginAsyncTask.REQUEST_CHECK_USER, userObj, Login.this, true);
                     loginAsyncTask.execute();
                 }
+
+
             }
         });
 
