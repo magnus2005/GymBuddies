@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="city_array">
+        <item>Wybierz swoje miasto...</item>
+        <item>Kraków</item>
+        <item>Warszawa</item>
+        <item>Gdańsk</item>
+        <item>Kraśnik</item>
+        <item>Lublin</item>
+        <item>Poznań</item>
+        <item>Wrocław</item>
+    </string-array>
+
+
+
+    <string-array name="gyms">
+        <item>Wybierz swoją siłownię</item>
+        <item>Platinium, Wadowicka</item>
+        <item>Platinium, Sovay</item>
+        <item>Platinium, Zakopiańska</item>
+    </string-array>
+
+
+
+</resources>

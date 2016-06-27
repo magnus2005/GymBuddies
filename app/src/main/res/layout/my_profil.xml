@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:orientation="vertical"
+    android:background="#2196f3"
+    android:translationZ="1dp">
+
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/my_avatar"
+        android:src="@drawable/av"
+
+        android:layout_gravity="center_horizontal|left"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/tvNameOfUser"
+        android:text="Mateusz"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_below="@+id/my_avatar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        android:textColor="#FFF" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/tvMiastooOUser"
+        android:text="Krakow"
+
+        android:layout_gravity="left|right|top|center|bottom"
+        android:textSize="10dp"
+        android:layout_below="@+id/tvNameOfUser"
+        android:layout_centerHorizontal="true"
+        android:textColor="#c8c8c8" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/tvMyGym"
+        android:text="Platinium, Wadowicka"
+        android:layout_gravity="left|right|top|center|bottom"
+        android:textSize="10dp"
+        android:layout_below="@+id/tvMiastooOUser"
+        android:layout_alignLeft="@+id/my_avatar"
+        android:layout_alignStart="@+id/my_avatar"
+        android:textColor="#c8c8c8" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnCancelActive"
+        android:src="@drawable/ic_cancel_24dp"
+        android:background="#fff"
+        android:layout_alignTop="@+id/tvMiastooOUser"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="90dp"
+        android:layout_marginEnd="90dp"
+        android:visibility="gone" />
+
+</RelativeLayout>
