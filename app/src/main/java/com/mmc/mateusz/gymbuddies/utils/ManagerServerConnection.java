@@ -38,7 +38,7 @@ public class ManagerServerConnection {
         try{
             if(active==true){
                 socket=new Socket();
-                socket.connect(new InetSocketAddress("10.0.0.76", 8882), timeOut);
+                socket.connect(new InetSocketAddress("10.0.0.65", 8882), timeOut);
             }else{
                 socket.close();
             }
@@ -98,6 +98,16 @@ public class ManagerServerConnection {
         int answer=-2;
         try {
             answer=(int)inputStream.readInt();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return answer;
+    }
+
+    public Boolean getBooleanAnswer(){
+        Boolean answer=null;
+        try {
+            answer=(Boolean)inputStream.readBoolean();
         } catch (IOException e) {
             e.printStackTrace();
         }

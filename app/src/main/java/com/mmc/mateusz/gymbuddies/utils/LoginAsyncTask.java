@@ -23,6 +23,7 @@ public class LoginAsyncTask extends AsyncTask<Integer, Void, Integer> implements
     public static final int REQUEST_WRITE_USER =1;
     public static final int REQUEST_ARRAY =2;
     public static final int REQUEST_SET_BUDDY =3;
+    public static final int REQUEST_CHECK_BUDDY =4;
 
     public ProgressDialog progress;
 
@@ -34,6 +35,7 @@ public class LoginAsyncTask extends AsyncTask<Integer, Void, Integer> implements
 
     private User userObjectToCheck;
     private int activeRequst;
+    private Boolean ifBuddyAnswer = null;
 
     private int intAnswer = -2;
     private User userAnswer = null;
@@ -93,6 +95,12 @@ public class LoginAsyncTask extends AsyncTask<Integer, Void, Integer> implements
                     serverConnection.sendRequest(REQUEST_SET_BUDDY);
                     serverConnection.sendUserObject(userObjectToCheck);
                     break;
+
+                case REQUEST_CHECK_BUDDY:
+                    serverConnection.sendRequest(REQUEST_CHECK_BUDDY);
+                    serverConnection.sendUserObject(userObjectToCheck);
+                    buddyAnswer();
+                    break;
             }
         } else{
           return -2;
@@ -111,9 +119,14 @@ public class LoginAsyncTask extends AsyncTask<Integer, Void, Integer> implements
         userAnswer=serverConnection.getUserObject();
     }
 
+    private void buddyAnswer(){
+        ifBuddyAnswer = serverConnection.getBooleanAnswer();
+    }
+
     public interface CommunicationWithAsynckTask{
         void onFinishAsyncTaskLogin(int aInt, User aUser);
         void arrayDelivery(ArrayList<User> arrayList);
+        void onBooBuddyAnswer(Boolean booAnswer);
     }
 
     @Override
@@ -126,7 +139,7 @@ public class LoginAsyncTask extends AsyncTask<Integer, Void, Integer> implements
         }
 
         if(integer==-2){
-            comunicate.onFinishAsyncTaskLogin(-2, null);
+
         }
 
         if(progress!=null){
@@ -134,6 +147,10 @@ public class LoginAsyncTask extends AsyncTask<Integer, Void, Integer> implements
         }
         if(progressBar!=null){
             progressBar.setVisibility(View.GONE);
+        }
+
+        if (ifBuddyAnswer !=null){
+            comunicate.onBooBuddyAnswer(ifBuddyAnswer);
         }
     }
 }

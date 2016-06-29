@@ -54,5 +54,15 @@ public class TabsAdapter extends FragmentStatePagerAdapter {
         return 2;
     }
 
+    @Override
+    public CharSequence getPageTitle(int position) {
+        switch (position) {
+            case 0:
+                return "GYM BUDDIES";
+            case 1:
+            default:
+                return "TWÓJ PROFIL";
+        }
+    }
 
 }

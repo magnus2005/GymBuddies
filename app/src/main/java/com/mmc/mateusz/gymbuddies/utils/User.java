@@ -12,7 +12,7 @@ public class User implements Serializable, Cloneable {
     private String Name = null;
     private String City = null;
     private Date DateBirthday = null;
-
+    private Long longDate=0L;
     private Boolean booBuddy=false;
 
     public User(){
@@ -63,13 +63,14 @@ public class User implements Serializable, Cloneable {
 
     public void setDateBirthday(int year, int month, int day){
         DateBirthday = new Date(year,month,day);
+        longDate = DateBirthday.getTime();
     }
     public void setDateBirthday(long date_birthday) {
-        DateBirthday = new Date(date_birthday);
+        longDate=date_birthday;
     }
 
     public long getDateBirthday(){
-        return  DateBirthday.getTime();
+        return  longDate;
     }
 
 

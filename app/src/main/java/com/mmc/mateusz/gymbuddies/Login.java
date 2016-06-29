@@ -56,14 +56,14 @@ public class Login extends AppCompatActivity implements LoginAsyncTask.Communica
         loginPref = getSharedPreferences(MainActivity.LOGIN_SPREFERENCES, MODE_PRIVATE);
         loginPrefEditor = loginPref.edit();
 
-        if (loginPref.contains("USER_PHONE")== true && loginPref.contains("USER_PHONE")){
+        if (loginPref.contains("USER_PHONE")== true && loginPref.contains("USER_PASSWORD")){
 
             userObj = new User(intPhoneNumber, strPassword);
             userObj.setPhoneNumber(loginPref.getInt("USER_PHONE", 0));
             userObj.setPassword(loginPref.getString("USER_PASSWORD", ""));
             userObj.setName(loginPref.getString("USER_NAME", ""));
             userObj.setCity(loginPref.getString("USER_CITY", ""));
-            //userObj.setDateBirthday(loginPref.getLong("DATE_BIRTHDAY", 0L));
+            userObj.setDateBirthday(loginPref.getLong("USER_BIRTHDAY", 0L));
 
             startMain(userObj);
         }
@@ -124,7 +124,7 @@ public class Login extends AppCompatActivity implements LoginAsyncTask.Communica
             loginPrefEditor.putString("USER_PASSWORD", userObj.getPassword());
             loginPrefEditor.putString("USER_NAME", userObj.getName());
             loginPrefEditor.putString("USER_CITY", userObj.getCity());
-            //loginPrefEditor.putLong("USER_BIRTHDAY", userObj.getDateBirthday());
+            loginPrefEditor.putLong("USER_BIRTHDAY", userObj.getDateBirthday());
 
             loginPrefEditor.commit();
             startMain(aUser);
@@ -161,6 +161,11 @@ public class Login extends AppCompatActivity implements LoginAsyncTask.Communica
 
     @Override
     public void arrayDelivery(ArrayList<User> arrayList) {
+
+    }
+
+    @Override
+    public void onBooBuddyAnswer(Boolean booAnswer) {
 
     }
 

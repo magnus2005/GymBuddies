@@ -7,8 +7,7 @@
         <!-- Customize your theme here. -->
 
 
-
-
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="android:windowBackground">@color/colorBackgroundDark</item>
 
         <item name="windowActionBar">false</item>

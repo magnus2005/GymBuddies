@@ -2,6 +2,7 @@ package com.mmc.mateusz.gymbuddies;
 
 import android.app.Activity;
 import android.content.Context;
+import android.nfc.Tag;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
@@ -64,6 +65,11 @@ public class ListFragmentUsers extends ListFragment implements LoginAsyncTask.Co
     public void arrayDelivery(ArrayList<User> arrayList) {
         ListFragmentUsers listFragmentUsers = new ListFragmentUsers();
 
+
+    }
+
+    @Override
+    public void onBooBuddyAnswer(Boolean booAnswer) {
 
     }
 

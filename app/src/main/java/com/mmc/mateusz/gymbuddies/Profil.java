@@ -26,7 +26,7 @@ import java.util.GregorianCalendar;
 
 public class Profil extends AppCompatActivity implements Serializable, LoginAsyncTask.CommunicationWithAsynckTask {
     public User Me;
-    private int year, month, day;
+    private int year=2000, month=0, day=1;
     public EditText etDate, etName, etPhoneNumber;
     public Button btnAcceptProfil;
     public Spinner spinnerMiasta, spinnerGymPlaces;
@@ -55,16 +55,23 @@ public class Profil extends AppCompatActivity implements Serializable, LoginAsyn
             Me= (User) getU.getSerializableExtra("EXISTED_USER");
             etPhoneNumber.setText("+48" + Me.getPhoneNumber());
             etName.setText((Me.getName()));
-/*
+
             Date date = new Date(Me.getDateBirthday());
             GregorianCalendar gregorianCalendar= new GregorianCalendar();
             gregorianCalendar.setTime(date);
             int aday = gregorianCalendar.get(Calendar.DAY_OF_MONTH);
             int amonth = gregorianCalendar.get(Calendar.MONTH);
             int ayear = gregorianCalendar.get(Calendar.YEAR);
-            String data = aday+"/"+amonth+"/"+ayear;
 
-            etDate.setText(data);*/
+
+
+            if (Me.getDateBirthday()!=0L){
+                year=ayear;
+                month=amonth;
+                day=aday;
+            }
+
+            etDate.setText(dataToString(day,month,year));
         }
 
         btnAcceptProfil.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +79,7 @@ public class Profil extends AppCompatActivity implements Serializable, LoginAsyn
             public void onClick(View v) {
 
                 Me.setName(etName.getText().toString());
-                Me.setDateBirthday(day,month,year);
+                Me.setDateBirthday(year-1900,month,day);
                 Me.setCity(spinnerMiasta.getSelectedItem().toString());
 
                 loginAsyncTask= new LoginAsyncTask(LoginAsyncTask.REQUEST_WRITE_USER, Me, Profil.this,false);
@@ -81,10 +88,10 @@ public class Profil extends AppCompatActivity implements Serializable, LoginAsyn
                 SharedPreferences pref = getSharedPreferences(MainActivity.LOGIN_SPREFERENCES, MODE_PRIVATE);
                 SharedPreferences.Editor prefEditor = pref.edit();
 
-                prefEditor.putInt("USER_PHONE",Me.getPhoneNumber());
+                prefEditor.putInt("USER_PHONE", Me.getPhoneNumber());
                 prefEditor.putString("USER_PASSWORD", Me.getPassword());
                 prefEditor.putString("USER_NAME", Me.getName());
-                //prefEditor.putLong("USER_DATE_BIRTH", Me.getDateBirthday());
+                prefEditor.putLong("USER_BIRTHDAY", Me.getDateBirthday());
                 prefEditor.putString("USER_CITY", Me.getCity());
 
                 prefEditor.commit();
@@ -115,7 +122,7 @@ public class Profil extends AppCompatActivity implements Serializable, LoginAsyn
     @Override
     protected Dialog onCreateDialog(int id) {
         if (id == 999) {
-            return new DatePickerDialog(this, myDateListener, 2000, 0, 1);
+            return new DatePickerDialog(this, myDateListener, year, month, day);
         }
         return null;
     }
@@ -127,7 +134,9 @@ public class Profil extends AppCompatActivity implements Serializable, LoginAsyn
             year=arg1;
             month=arg2;
             day=arg3;
-            etDate.setText(Integer.toString(day)+"/"+Integer.toString(month+1)+"/"+Integer.toString(year));
+
+            etDate.setText(dataToString(day,month,year));
+
         }
     };
 
@@ -144,6 +153,20 @@ public class Profil extends AppCompatActivity implements Serializable, LoginAsyn
 
     }
 
+    private String dataToString(int day, int month, int year){
+        String dzien;
+        String miesiac;
+        if ((dzien = Integer.toString(day)).length()==1){
+            dzien = "0"+dzien;
+        }
+
+        if ((miesiac = Integer.toString((month+1))).length()==1){
+            miesiac = "0"+miesiac;
+        }
+
+        return dzien+"/"+miesiac+"/"+Integer.toString(year);
+    }
+
     public void onPause(){
         super.onPause();
 
@@ -158,6 +181,11 @@ public class Profil extends AppCompatActivity implements Serializable, LoginAsyn
 
     @Override
     public void arrayDelivery(ArrayList<User> arrayList) {
+
+    }
+
+    @Override
+    public void onBooBuddyAnswer(Boolean booAnswer) {
 
     }
 

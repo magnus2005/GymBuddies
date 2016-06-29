@@ -9,33 +9,48 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
+    <FrameLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight=".1"
+        android:id="@+id/testFragmentu2"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+
+        android:background="#fff"
+        android:elevation="0dp"></FrameLayout>
+
+    <FrameLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/testFragmentu"
         android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"></LinearLayout>
+        android:layout_centerHorizontal="true"
+
+        android:background="#fff"
+        android:elevation="2dp"></FrameLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+
+        android:background="@color/colorPrimary"
+        android:elevation="1dp">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_gravity="right|top"
+            android:background="@android:color/transparent">
 
             <TextView android:id="@id/android:empty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:layout_weight="1"
                 android:text="Niestety, wszyscy mają partnerów na siłownię... :(" />
 
 
@@ -47,14 +62,8 @@
 
 
         </LinearLayout>
-
-
-
-
-
-
-
     </android.support.v4.widget.SwipeRefreshLayout>
+
 
 </LinearLayout>
 
