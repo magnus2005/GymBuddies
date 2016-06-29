@@ -22,7 +22,8 @@ public class ListFragmentUsers extends ListFragment implements LoginAsyncTask.Co
     private ArrayList<User> arrayUserList;
     private User Me;
     private Context context;
-    public LoginAsyncTask.CommunicationWithAsynckTask x = MainActivity.communicate;
+    public LoginAsyncTask.CommunicationWithAsynckTask  communicate;
+    SwipeRefreshLayout swype;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,16 +43,17 @@ public class ListFragmentUsers extends ListFragment implements LoginAsyncTask.Co
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SwipeRefreshLayout swype = (SwipeRefreshLayout)getActivity().findViewById(R.id.swiperefresh);
+         swype = (SwipeRefreshLayout)getActivity().findViewById(R.id.swiperefresh);
+
 
         swype.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                LoginAsyncTask loginAsyncTask = new LoginAsyncTask(LoginAsyncTask.REQUEST_ARRAY,Me,MainActivity.communicate,false);
-                loginAsyncTask.execute();
+                pobierzDane();
 
             }
         });
+
 
 
     }
@@ -63,18 +65,43 @@ public class ListFragmentUsers extends ListFragment implements LoginAsyncTask.Co
 
     @Override
     public void arrayDelivery(ArrayList<User> arrayList) {
-        ListFragmentUsers listFragmentUsers = new ListFragmentUsers();
+        CustomAdapter customAdapter = new CustomAdapter(getActivity(),arrayList);
+        setListAdapter(customAdapter);
+        swype.setRefreshing(false);
+
 
 
     }
 
     @Override
     public void onBooBuddyAnswer(Boolean booAnswer) {
+        BuddyStatusFragment buddyStatusFragment = new BuddyStatusFragment();
 
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+
+        if (booAnswer==true){
+
+            fragmentTransaction.add(R.id.testFragmentu2, buddyStatusFragment).commit();
+
+            if (buddyStatusFragment.isVisible()==true){
+
+            }
+        } else {
+            fragmentTransaction.remove(buddyStatusFragment).commit();
+
+        }
     }
 
     @Override
     public void onRefresh() {
 
+    }
+
+    public void pobierzDane(){
+        LoginAsyncTask loginAsyncTask = new LoginAsyncTask(LoginAsyncTask.REQUEST_ARRAY,Me,ListFragmentUsers.this,false);
+        loginAsyncTask.execute();
     }
 }

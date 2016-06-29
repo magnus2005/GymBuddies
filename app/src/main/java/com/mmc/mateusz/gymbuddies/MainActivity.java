@@ -75,26 +75,63 @@ public class MainActivity extends AppCompatActivity implements LoginAsyncTask.Co
         fabBeBuddy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginAsyncTask loginAsyncTaska = new LoginAsyncTask(LoginAsyncTask.REQUEST_ARRAY,Me,MainActivity.this,false);
-                loginAsyncTaska.execute();
 
                 LoginAsyncTask loginAsyncTask = new LoginAsyncTask(LoginAsyncTask.REQUEST_SET_BUDDY,Me,MainActivity.this,true);
                 loginAsyncTask.execute();
 
                 LoginAsyncTask loginAsyncTask1 = new LoginAsyncTask(LoginAsyncTask.REQUEST_CHECK_BUDDY,Me,MainActivity.this,false);
                 loginAsyncTask1.execute();
+                
+                listFragmentUsers.pobierzDane();
             }
         });
 
 
-
-
-
-        LoginAsyncTask loginAsyncTask = new LoginAsyncTask(LoginAsyncTask.REQUEST_ARRAY,Me,MainActivity.this,false);
-        loginAsyncTask.execute();
-
         //LoginAsyncTask loginAsyncTask1 = new LoginAsyncTask(LoginAsyncTask.REQUEST_CHECK_BUDDY,Me,MainActivity.this,false);
         //loginAsyncTask1.execute();
+
+
+
+
+
+
+
+
+        if (listFragmentUsers!=null){
+            if (listFragmentUsers.isVisible()!=false){
+                lastPosition =  viewPager.getCurrentItem();
+            }
+        }
+
+        listFragmentUsers = new ListFragmentUsers();
+        listFragmentUsers.pobierzDane();
+        myProfil=new MyProfil(Me);
+        listFragmentUsers.setMe(Me);
+
+        //CustomAdapter customAdapter = new CustomAdapter(this,arrayList);
+       // listFragmentUsers.setListAdapter(customAdapter);
+
+        tabsAdapter = new TabsAdapter(getSupportFragmentManager(),listFragmentUsers, myProfil);
+        viewPager = (ViewPager)findViewById(R.id.pager);
+
+        viewPager.setAdapter(tabsAdapter);
+        viewPager.setCurrentItem(lastPosition);
+        tabLayout.addTab(tabLayout.newTab().setText("GYM BUDDIES"));
+        tabLayout.addTab(tabLayout.newTab().setText("TWÓJ PROFIL"));
+
+
+        tabLayout.setupWithViewPager(viewPager);
+
+
+
+
+
+
+
+
+
+
+
 
     }
 
@@ -123,6 +160,8 @@ public class MainActivity extends AppCompatActivity implements LoginAsyncTask.Co
 
     @Override
     public void arrayDelivery(ArrayList<User> arrayList) {
+
+        /*
         if (listFragmentUsers!=null){
             if (listFragmentUsers.isVisible()!=false){
                 lastPosition =  viewPager.getCurrentItem();
@@ -146,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements LoginAsyncTask.Co
 
 
         tabLayout.setupWithViewPager(viewPager);
-
+*/
 
     }
 
