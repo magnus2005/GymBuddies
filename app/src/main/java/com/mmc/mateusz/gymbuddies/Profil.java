@@ -4,7 +4,18 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -12,18 +23,24 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 
+import com.mmc.mateusz.gymbuddies.utils.Imaging;
 import com.mmc.mateusz.gymbuddies.utils.LoginAsyncTask;
 import com.mmc.mateusz.gymbuddies.utils.User;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
+///http://stackoverflow.com/questions/2507898/how-to-pick-an-image-from-gallery-sd-card-for-my-app
 public class Profil extends AppCompatActivity implements Serializable, LoginAsyncTask.CommunicationWithAsynckTask {
     public User Me;
     private int year=2000, month=0, day=1;
@@ -31,6 +48,9 @@ public class Profil extends AppCompatActivity implements Serializable, LoginAsyn
     public Button btnAcceptProfil;
     public Spinner spinnerMiasta, spinnerGymPlaces;
     private LoginAsyncTask loginAsyncTask;
+    private ImageView myAvatar;
+    private static final int SELECT_PHOTO = 100;
+    public String imagePath;
 
 
     @Override
@@ -44,6 +64,21 @@ public class Profil extends AppCompatActivity implements Serializable, LoginAsyn
         etName = (EditText) findViewById(R.id.etName);
         etDate = (EditText) findViewById(R.id.etDate);
         spinnerMiasta = (Spinner) findViewById(R.id.spinerMiasta);
+
+        myAvatar = (ImageView) findViewById(R.id.iv_my_avatar);
+
+
+
+        myAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+            }
+        });
 
 
         Intent getU = getIntent();
@@ -93,6 +128,7 @@ public class Profil extends AppCompatActivity implements Serializable, LoginAsyn
                 prefEditor.putString("USER_NAME", Me.getName());
                 prefEditor.putLong("USER_BIRTHDAY", Me.getDateBirthday());
                 prefEditor.putString("USER_CITY", Me.getCity());
+                prefEditor.putString("USER_IMAGE_PATH", imagePath );
 
                 prefEditor.commit();
 
@@ -177,7 +213,7 @@ public class Profil extends AppCompatActivity implements Serializable, LoginAsyn
     @Override
     public void onFinishAsyncTaskLogin(int aInt, User aUser) {
 
-    }
+}
 
     @Override
     public void arrayDelivery(ArrayList<User> arrayList) {
@@ -188,6 +224,70 @@ public class Profil extends AppCompatActivity implements Serializable, LoginAsyn
     public void onBooBuddyAnswer(Boolean booAnswer) {
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(requestCode) {
+            case SELECT_PHOTO:
+                if(resultCode == RESULT_OK){
+
+                    Imaging imaging = new Imaging(data, Profil.this);
+                    //Uri selectedImage = data.getData();
+
+                    //File obrazek = new File(selectedImage.getPath());
+                    imagePath=imaging.givePath();
+                   /* InputStream imageStream = null;
+                    try {
+                        imageStream = getContentResolver().openInputStream(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                    Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
+
+                    Bitmap x = Bitmap.createScaledBitmap(yourSelectedImage,1000 ,1000,false);
+*/
+                    myAvatar.setImageBitmap(imaging.cos());
+                }
+        }
+
+    }
+
+    private String getPath(Uri uri) {
+
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(uri, projection, null, null,null);
+
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+
+        return cursor.getString(column_index);
+    }
+
+    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
+        //return _bmp;
+        return output;
+    }
+
 
 
 }

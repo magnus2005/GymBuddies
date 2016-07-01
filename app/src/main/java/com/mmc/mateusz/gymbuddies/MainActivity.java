@@ -3,6 +3,9 @@ package com.mmc.mateusz.gymbuddies;
 
 import android.content.Intent;
 
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.design.widget.FloatingActionButton;
 
 import android.support.design.widget.TabLayout;
@@ -25,6 +28,7 @@ import android.widget.TextView;
 import com.mmc.mateusz.gymbuddies.utils.LoginAsyncTask;
 import com.mmc.mateusz.gymbuddies.utils.User;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements LoginAsyncTask.CommunicationWithAsynckTask {
@@ -63,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements LoginAsyncTask.Co
         avatar = (ImageView)findViewById(R.id.my_avatar);
         fabBeBuddy = (FloatingActionButton)findViewById(R.id.fabBeBuddy);
 
+
+
+        
 
 
         Me = new User();

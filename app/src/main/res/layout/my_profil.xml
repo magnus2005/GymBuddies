@@ -10,6 +10,33 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:gravity="center"
+        android:elevation="2dp"
+        android:id="@+id/linearLayout2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/my_avatar"
+            android:src="@drawable/av"
+
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:elevation="0dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerCrop" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout5"
         android:elevation="1dp"
@@ -195,33 +222,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:gravity="center"
-        android:elevation="2dp"
-        android:id="@+id/linearLayout2"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/colorPrimary">
-
-        <ImageView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:id="@+id/my_avatar"
-            android:src="@drawable/av"
-
-            android:layout_gravity="center"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            android:elevation="0dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
 
     </LinearLayout>
 

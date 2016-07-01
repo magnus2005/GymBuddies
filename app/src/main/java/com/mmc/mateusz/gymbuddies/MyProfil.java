@@ -1,6 +1,9 @@
 package com.mmc.mateusz.gymbuddies;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,10 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mmc.mateusz.gymbuddies.utils.Imaging;
 import com.mmc.mateusz.gymbuddies.utils.User;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -37,6 +43,19 @@ public class MyProfil extends Fragment {
         TextView myCity=(TextView)getView().findViewById(R.id.tvMycity);
         TextView myDateBirth=(TextView)getView().findViewById(R.id.tvMyDateBirth);
         TextView myPhoneNumber=(TextView)getView().findViewById(R.id.tvMyPhoneNumber);
+        ImageView avatar = (ImageView)getView().findViewById(R.id.my_avatar);
+
+
+
+        SharedPreferences sp = getActivity().getSharedPreferences(MainActivity.LOGIN_SPREFERENCES, MainActivity.MODE_PRIVATE);
+        String path = sp.getString("USER_IMAGE_PATH","");
+
+        if (!path.equals("")){
+            avatar.setImageBitmap(new Imaging().getImageFromPath(path));
+        }
+
+
+
         myName.setText(Me.getName());
         myCity.setText(Me.getCity());
         myPhoneNumber.setText("+48"+Me.getPhoneNumber());
