@@ -51,7 +51,7 @@ public class MyProfil extends Fragment {
         String path = sp.getString("USER_IMAGE_PATH","");
 
         if (!path.equals("")){
-            avatar.setImageBitmap(new Imaging().getImageFromPath(path));
+            avatar.setImageBitmap(new Imaging(path).getCircleImage());
         }
 
 
@@ -79,6 +79,7 @@ public class MyProfil extends Fragment {
                 passObj.putExtra("EXISTED_USER", Me);
 
                 startActivity(passObj);
+                getActivity().finish();
 
             }
         });

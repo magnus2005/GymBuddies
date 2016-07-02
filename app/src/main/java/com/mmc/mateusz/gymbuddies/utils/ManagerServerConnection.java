@@ -38,7 +38,7 @@ public class ManagerServerConnection {
         try{
             if(active==true){
                 socket=new Socket();
-                socket.connect(new InetSocketAddress("192.168.42.228", 8882), timeOut);
+                socket.connect(new InetSocketAddress("10.0.0.65", 8882), timeOut);
             }else{
                 socket.close();
             }

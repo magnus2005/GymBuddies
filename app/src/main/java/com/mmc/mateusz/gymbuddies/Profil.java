@@ -51,6 +51,8 @@ public class Profil extends AppCompatActivity implements Serializable, LoginAsyn
     private ImageView myAvatar;
     private static final int SELECT_PHOTO = 100;
     public String imagePath;
+    SharedPreferences pref;
+    SharedPreferences.Editor prefEditor;
 
 
     @Override
@@ -66,6 +68,17 @@ public class Profil extends AppCompatActivity implements Serializable, LoginAsyn
         spinnerMiasta = (Spinner) findViewById(R.id.spinerMiasta);
 
         myAvatar = (ImageView) findViewById(R.id.iv_my_avatar);
+
+         pref= getSharedPreferences(MainActivity.LOGIN_SPREFERENCES, MODE_PRIVATE);
+         prefEditor = pref.edit();
+
+        if(pref.contains("USER_IMAGE_PATH")){
+            imagePath=pref.getString("USER_IMAGE_PATH","");
+            Imaging avat=new Imaging(imagePath);
+
+            myAvatar.setImageBitmap(avat.getCircleImage());
+        }
+
 
 
 
@@ -120,8 +133,7 @@ public class Profil extends AppCompatActivity implements Serializable, LoginAsyn
                 loginAsyncTask= new LoginAsyncTask(LoginAsyncTask.REQUEST_WRITE_USER, Me, Profil.this,false);
                 loginAsyncTask.execute();
 
-                SharedPreferences pref = getSharedPreferences(MainActivity.LOGIN_SPREFERENCES, MODE_PRIVATE);
-                SharedPreferences.Editor prefEditor = pref.edit();
+
 
                 prefEditor.putInt("USER_PHONE", Me.getPhoneNumber());
                 prefEditor.putString("USER_PASSWORD", Me.getPassword());
@@ -234,60 +246,13 @@ public class Profil extends AppCompatActivity implements Serializable, LoginAsyn
                 if(resultCode == RESULT_OK){
 
                     Imaging imaging = new Imaging(data, Profil.this);
-                    //Uri selectedImage = data.getData();
 
-                    //File obrazek = new File(selectedImage.getPath());
                     imagePath=imaging.givePath();
-                   /* InputStream imageStream = null;
-                    try {
-                        imageStream = getContentResolver().openInputStream(selectedImage);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
 
-                    Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
-
-                    Bitmap x = Bitmap.createScaledBitmap(yourSelectedImage,1000 ,1000,false);
-*/
-                    myAvatar.setImageBitmap(imaging.cos());
+                    myAvatar.setImageBitmap(imaging.getCircleImage());
                 }
         }
 
     }
-
-    private String getPath(Uri uri) {
-
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getContentResolver().query(uri, projection, null, null,null);
-
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-
-        return cursor.getString(column_index);
-    }
-
-    public Bitmap getCroppedBitmap(Bitmap bitmap) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
-                bitmap.getWidth() / 2, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
-        //return _bmp;
-        return output;
-    }
-
-
 
 }
